@@ -1,0 +1,79 @@
+- name: Install dp_pos packages
+  hosts: 192.168.8.2
+  vars:
+    src_dp_rpm: "files/dp_pos/tjs-beanstore-client-3.155.0.TJ-222.000.010.noarch.rpm"
+    dest_dp_rpm: "/usr/lib/sysimage/rpm/tjs-beanstore-client-3.155.0.TJ-222.000.010.noarch.rpm"
+
+    src_ncr_rpm: "files/dp_pos/ncr-rpsl-9.3.0-1.x86_64.rpm"
+    dest_ncr_rpm: "/usr/lib/sysimage/rpm/ncr-rpsl-9.3.0-1.x86_64.rpm"
+
+    src_epson_rpm: "files/dp_pos/epson-javapos-1.14.28-6.x86_64.rpm"
+    dest_epson_rpm: "/usr/lib/sysimage/rpm/epson-javapos-1.14.28-6.x86_64.rpm"
+
+    src_vendorOptions: "files/dp_pos/.vendorOptions"
+    dest_vendorOptions: "/beanstore-client/pos/.vendorOptions"
+
+    src_auto_cutover: "files/dp_pos/.auto-cutover"
+    dest_auto_cutover: "/beanstore-client/pos/.auto-cutover"
+
+    src_aurus_jar: "files/dp_pos/aurus-aesdk-service.jar.11ca_0300"
+    dest_aurus_jar: "/beanstore-client/util/scripts/aurus/aurus-aesdk-service.jar.11ca_0300"
+
+    file_mode: '0644'
+    backup_files: no
+
+  tasks:
+    - name: Copy RPM and configuration files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ file_mode }}"
+        backup: "{{ backup_files }}"
+      loop:
+        - { src: "{{ src_dp_rpm }}", dest: "{{ dest_dp_rpm }}" }
+        - { src: "{{ src_ncr_rpm }}", dest: "{{ dest_ncr_rpm }}" }
+        - { src: "{{ src_epson_rpm }}", dest: "{{ dest_epson_rpm }}" }
+        - { src: "{{ src_vendorOptions }}", dest: "{{ dest_vendorOptions }}" }
+        - { src: "{{ src_auto_cutover }}", dest: "{{ dest_auto_cutover }}" }
+        - { src: "{{ src_aurus_jar }}", dest: "{{ dest_aurus_jar }}" }
+
+    - name: Check if NCR RPM is installed
+      ansible.builtin.command:
+        cmd: rpm -q ncr-rpsl
+      register: ncr_installed
+      ignore_errors: yes
+
+    - name: Install NCR RPM
+      ansible.builtin.command:
+        cmd: rpm -Uvh "{{ dest_ncr_rpm }}"
+      when: not ncr_installed.rc == 0
+
+    - name: Check if Epson RPM is installed
+      ansible.builtin.command:
+        cmd: rpm -q epson-javapos
+      register: epson_installed
+      ignore_errors: yes
+
+    - name: Install Epson RPM
+      ansible.builtin.command:
+        cmd: rpm -Uvh "{{ dest_epson_rpm }}"
+      when: not epson_installed.rc == 0
+
+    - name: Check if Dill Pickle RPM is installed
+      ansible.builtin.command:
+        cmd: rpm -q tjs-beanstore-client
+      register: dp_installed
+      ignore_errors: yes
+
+    - name: Install Dill Pickle RPM
+      ansible.builtin.command:
+        cmd: rpm -Uvh "{{ dest_dp_rpm }}"
+      when: not dp_installed.rc == 0
+
+    - name: Pause for 10 seconds
+      ansible.builtin.pause:
+        seconds: 3000
+
+    - name: Restart POS service
+      ansible.builtin.command: killall java
+      ignore_errors: yes
