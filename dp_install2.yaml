@@ -1,5 +1,5 @@
-- name: Install dp_pos packages
-  hosts: target
+---
+- hosts: target
   vars:
     src_dp_rpm: "files/dp_pos/tjs-beanstore-client-3.155.0.TJ-222.000.010.noarch.rpm"
     dest_dp_rpm: "/usr/lib/sysimage/rpm/tjs-beanstore-client-3.155.0.TJ-222.000.010.noarch.rpm"
