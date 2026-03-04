@@ -1,7 +1,7 @@
 - name: Install Wallpaper
   hosts: target
   vars:
-    src_wallpaper: "/files/test.txt"
+    src_wallpaper: "files/test.txt"
     dest_wallpaper: "/usr/share/wallpapers/test.txt"
 
     file_mode: '0644'
