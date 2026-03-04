@@ -1,3 +1,14 @@
+- name: Install Wallpaper
+  hosts: target
+  vars:
+    src_wallpaper: "/home/ansible/semaphore-playbooks/files/white.png"
+    #src_wallpaper: "files/white.png"
+    dest_wallpaper: "/usr/share/wallpapers/white.png"
+    force: yes
+    file_mode: '0644'
+    backup_files: yes
+
+
 - name: Debug - Check file path
   ansible.builtin.debug:
     msg: "Looking for file at: /home/ansible/semaphore-playbooks/files/white.png"
