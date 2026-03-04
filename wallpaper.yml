@@ -27,5 +27,8 @@
       when: not wallpaper_stat.stat.exists
 
     - name: Restart POS service
-      ansible.builtin.command: reboot now
-      ignore_errors: yes
+      ansible.builtin.reboot:
+        msg: "System rebooting to apply wallpaper changes"
+        reboot_timeout: 600
+        pre_reboot_delay: 2
+        post_reboot_delay: 5
