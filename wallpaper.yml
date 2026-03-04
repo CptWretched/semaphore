@@ -34,3 +34,16 @@
         reboot_timeout: 600
         pre_reboot_delay: 2
         post_reboot_delay: 5
+    - name: Debug - Check file path
+  
+  ansible.builtin.debug:
+    msg: "Looking for file at: /home/ansible/semaphore-playbooks/files/white.png"
+
+    - name: Debug - Verify file exists
+      ansible.builtin.stat:
+        path: "/home/ansible/semaphore-playbooks/files/white.png"
+      register: file_check
+
+    - name: Debug - Show file stat result
+      ansible.builtin.debug:
+        var: file_check
