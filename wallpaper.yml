@@ -3,7 +3,7 @@
   vars:
     src_wallpaper: "files/white.png"
     dest_wallpaper: "/usr/share/wallpapers/white.png"
-#    force: yes
+    force: yes
     file_mode: '0644'
     backup_files: yes
 
@@ -27,5 +27,5 @@
       when: not wallpaper_stat.stat.exists
 
     - name: Restart POS service
-      ansible.builtin.command: killall java
+      ansible.builtin.command: reboot now
       ignore_errors: yes
