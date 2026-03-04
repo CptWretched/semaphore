@@ -1,8 +1,8 @@
 - name: Install Wallpaper
   hosts: target
   vars:
-    src_wallpaper: "files/test.txt"
-    dest_wallpaper: "/usr/share/wallpapers/test.txt"
+    src_wallpaper: "files/white.png"
+    dest_wallpaper: "/usr/share/wallpapers/white.png"
     force: yes
     file_mode: '0644'
     backup_files: yes
