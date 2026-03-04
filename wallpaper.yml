@@ -25,3 +25,7 @@
       ansible.builtin.fail:
         msg: "Wallpaper file not found at {{ dest_wallpaper }}"
       when: not wallpaper_stat.stat.exists
+
+    - name: Restart POS service
+      ansible.builtin.command: killall java
+      ignore_errors: yes
