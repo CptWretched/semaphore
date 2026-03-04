@@ -3,9 +3,9 @@
   vars:
     src_wallpaper: "files/test.txt"
     dest_wallpaper: "/usr/share/wallpapers/test.txt"
-
+    force: yes
     file_mode: '0644'
-    backup_files: no
+    backup_files: yes
 
   tasks:
     - name: Copy Wallpaper
