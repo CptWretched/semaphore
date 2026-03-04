@@ -16,3 +16,12 @@
         backup: "{{ backup_files }}"
       loop:
         - { src: "{{ src_wallpaper }}", dest: "{{ dest_wallpaper }}" }
+    - name: Verify Wallpaper File Exists
+      ansible.builtin.stat:
+        path: "{{ dest_wallpaper }}"
+      register: wallpaper_stat
+
+    - name: Fail if Wallpaper Not Found
+      ansible.builtin.fail:
+        msg: "Wallpaper file not found at {{ dest_wallpaper }}"
+      when: not wallpaper_stat.stat.exists
