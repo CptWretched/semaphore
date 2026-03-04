@@ -1,49 +1,12 @@
-- name: Install Wallpaper
-  hosts: target
-  vars:
-    src_wallpaper: "/home/ansible/semaphore-playbooks/files/white.png"
-    #src_wallpaper: "files/white.png"
-    dest_wallpaper: "/usr/share/wallpapers/white.png"
-    force: yes
-    file_mode: '0644'
-    backup_files: yes
-
-  tasks:
-    - name: Copy Wallpaper
-      ansible.builtin.copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        mode: "{{ file_mode }}"
-        backup: "{{ backup_files }}"
-      loop:
-        - { src: "{{ src_wallpaper }}", dest: "{{ dest_wallpaper }}" }
-  
-    - name: Verify Wallpaper File Exists
-      ansible.builtin.stat:
-        path: "{{ dest_wallpaper }}"
-      register: wallpaper_stat
-
-    - name: Fail if Wallpaper Not Found
-      ansible.builtin.fail:
-        msg: "Wallpaper file not found at {{ dest_wallpaper }}"
-      when: not wallpaper_stat.stat.exists
-
-    - name: Restart POS service
-      ansible.builtin.reboot:
-        msg: "System rebooting to apply wallpaper changes"
-        reboot_timeout: 600
-        pre_reboot_delay: 2
-        post_reboot_delay: 5
-    - name: Debug - Check file path
-  
+- name: Debug - Check file path
   ansible.builtin.debug:
     msg: "Looking for file at: /home/ansible/semaphore-playbooks/files/white.png"
 
-    - name: Debug - Verify file exists
-      ansible.builtin.stat:
-        path: "/home/ansible/semaphore-playbooks/files/white.png"
-      register: file_check
+- name: Debug - Verify file exists
+  ansible.builtin.stat:
+    path: "/home/ansible/semaphore-playbooks/files/white.png"
+  register: file_check
 
-    - name: Debug - Show file stat result
-      ansible.builtin.debug:
-        var: file_check
+- name: Debug - Show file stat result
+  ansible.builtin.debug:
+    var: file_check
