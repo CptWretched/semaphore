@@ -1,7 +1,7 @@
 - name: Install Wallpaper
   hosts: target
   vars:
-    src_wallpaper: "~/ansible/semaphore-playbooks/white.png"
+    src_wallpaper: "~/ansible/semaphore-playbooks/files/white.png"
     #src_wallpaper: "files/white.png"
     dest_wallpaper: "/usr/share/wallpapers/white.png"
     force: yes
